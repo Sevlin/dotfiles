@@ -13,4 +13,5 @@ alias 'emacs'='emacs -nw'
 alias '..'='cd ..'
 alias 'fucking'='sudo'
 alias myip="curl http://myip.nix.org.ua/ 2> /dev/null || echo 'Unable to determine IP address' 1>&2"
+alias weather='curl http://wttr.in/Kyiv' 2> /dev/null
 

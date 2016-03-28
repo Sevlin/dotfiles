@@ -57,8 +57,8 @@ agent()
                         kill -TERM ${SSH_AGENT_PID} &> /dev/null
                 ;;
                 'restart')
-                        ssh-keychain stop
-                        ssh-keychain start
+                        agent stop
+                        agent start
                 ;;
                 'status')
                         ssh-add -l

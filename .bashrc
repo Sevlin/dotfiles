@@ -43,4 +43,31 @@ if [ -f ~/.bash_aliases ]; then
 	. ~/.bash_aliases
 fi
 
+# --- SSH agent --- #
+agent()
+{
+        case ${1} in
+                'start')
+                        if [ -z "${SSH_AUTH_SOCK}" ] ; then
+                          eval `ssh-agent -s`
+                          ssh-add
+                        fi
+                ;;
+                'stop')
+                        kill -TERM ${SSH_AGENT_PID} &> /dev/null
+                ;;
+                'restart')
+                        ssh-keychain stop
+                        ssh-keychain start
+                ;;
+                'status')
+                        ssh-add -l
+                ;;
+                *) 
+                        echo "Usage:"
+                        echo "   agent {start|stop|restart|status}"
+                        return 1
+                ;;
+        esac
+}
 

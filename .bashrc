@@ -73,7 +73,7 @@ agent()
         ;;
         *) 
             echo "Usage:"
-            echo "   agent {start|stop|restart|status}"
+            echo "   agent {start|stop|term|restart|status|add <key>}"
             return 1
         ;;
     esac

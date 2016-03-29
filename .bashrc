@@ -1,4 +1,4 @@
-#PROXY_HOST='http://proxy.mi6:3128'
+#PROXY_HOST='http://proxy.local:3128'
 #export http_proxy=$PROXY_HOST
 #export HTTP_PROXY=$PROXY_HOST
 #export https_proxy=$PROXY_HOST

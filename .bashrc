@@ -69,11 +69,14 @@ agent()
         'add')
             if [ -r "${2}" ]; then
                 ssh-add "${2}"
+            else
+                echo "Can't read file ${2}" 1>&2
+                return 1
             fi
         ;;
         *) 
-            echo "Usage:"
-            echo "   agent {start|stop|term|restart|status|add <key>}"
+            echo "Usage:" 1>&2
+            echo "   agent {start|stop|term|restart|status|add <key>}" 1>&2
             return 1
         ;;
     esac

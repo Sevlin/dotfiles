@@ -23,24 +23,24 @@ USER_PS2='\[\033[01;32m\]|\[\033[00m\] '
 #USER_PS1='\[\033[01;34m[\]\[\033[01;32m\u@\h\]\[\033[01;34m \w]\]\[\033[1;32m\$\033[0m\] '
 
 if [ "${USERNAME}" == 'root' ]; then
-	export PS1="${ROOT_PS1}"
-	export PS2="${ROOT_PS2}"
+    export PS1="${ROOT_PS1}"
+    export PS2="${ROOT_PS2}"
 else
-	export PS1="${USER_PS1}"
-	export PS2="${USER_PS2}"
-	export SUDO_PS1="${ROOT_PS1}"
-	export SUDO_PS2="${ROOT_PS2}"
+    export PS1="${USER_PS1}"
+    export PS2="${USER_PS2}"
+    export SUDO_PS1="${ROOT_PS1}"
+    export SUDO_PS2="${ROOT_PS2}"
 fi
 
-                
+
 export PAGER=/usr/bin/most
 export EDITOR=/usr/bin/vim
 export BROWSER=/usr/bin/firefox
 export MAKEOPTS='-j 2'
 export NUMJOBS=${MAKEOPTS}
-                
+
 if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 
 # --- SSH agent --- #

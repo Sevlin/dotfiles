@@ -74,7 +74,7 @@ agent()
                 return 1
             fi
         ;;
-        *) 
+        *)
             echo "Usage:" 1>&2
             echo "   agent {start|stop|term|restart|status|add <key>}" 1>&2
             return 1

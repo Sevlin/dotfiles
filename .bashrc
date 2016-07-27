@@ -82,3 +82,49 @@ agent()
     esac
 }
 
+
+# --- MyIP resolver --- #
+_myip_ip4()
+{
+    echo -n 'IPv4: '
+    curl -4 --no-keepalive \
+            --silent \
+            --connect-timeout "3" \
+            --get "${1}" 2>/dev/null \
+    || echo 'Unable to determine' 1>&2
+}
+
+_myip_ip6()
+{
+    echo -n 'IPv6: '
+    curl -6 --no-keepalive \
+            --silent \
+            --connect-timeout "3" \
+            --get "${1}" 2>/dev/null \
+    || echo 'Unable to determine' 1>&2
+}
+
+myip()
+{
+    local _myip_url='http://myip.nix.org.ua'
+    case "${1}" in
+        4|v4|-4|-v4) _myip_ip4 "${_myip_url}" ;;
+        6|v6|-6|-v6) _myip_ip6 "${_myip_url}" ;;
+       help)
+            echo 'Usage:'
+            echo '   myip <options>'
+            echo ''
+            echo 'Options:'
+            echo '   4|v4|-4|-v4 - resolve only IPv4 address'
+            echo '   6|v6|-6|-v6 - resolve only IPv6 address'
+            echo '   help - show help'
+        ;;
+        *)
+            _myip_ip4 "${_myip_url}"
+            _myip_ip6 "${_myip_url}"
+        ;;
+    esac
+
+    return 0
+}
+

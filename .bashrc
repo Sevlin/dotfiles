@@ -106,7 +106,7 @@ _myip_ip6()
 
 myip()
 {
-    local _myip_url='http://myip.nix.org.ua'
+    local _myip_url='https://myip.nix.org.ua'
     case "${1}" in
         4|v4|-4|-v4) _myip_ip4 "${_myip_url}" ;;
         6|v6|-6|-v6) _myip_ip6 "${_myip_url}" ;;

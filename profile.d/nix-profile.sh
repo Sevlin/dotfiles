@@ -41,7 +41,6 @@ fi
 if [ -r "${HOME}/.ssh/.ssh-agent" ]; then
     source "${HOME}/.ssh/.ssh-agent" 1>/dev/null
 fi
-
 agent()
 {
     case "${1}" in
@@ -56,9 +55,14 @@ agent()
         ;;
         'stop')
             kill -TERM ${SSH_AGENT_PID} &> /dev/null
+            unset SSH_AUTH_SOCK SSH_AGENT_PID
         ;;
         'term')
-            killall -s TERM ssh-agent
+            killall -s TERM ssh-agent &> /dev/null
+            unset SSH_AUTH_SOCK SSH_AGENT_PID
+            if [ -f "${HOME}/.ssh/.ssh-agent" ]; then
+                rm -f "${HOME}/.ssh/.ssh-agent" &> /dev/null
+            fi
         ;;
         'restart')
             agent stop
@@ -82,7 +86,6 @@ agent()
         ;;
     esac
 }
-
 
 # --- MyIP resolver --- #
 _myip_ip4()

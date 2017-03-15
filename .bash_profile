@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 readonly __COLRST='\033[00m'
 readonly __COLRED='\033[01;31m'
 readonly __COLGRN='\033[01;32m'
@@ -113,6 +114,10 @@ __export_ps()
 }
 
 
+
+################################
+# Actual exporting starts here #
+################################
 __export_ps
 export PAGER=/usr/bin/most
 export EDITOR=/usr/bin/vim

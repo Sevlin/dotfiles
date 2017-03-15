@@ -4,38 +4,11 @@ readonly __COLGRN='\033[01;32m'
 readonly __COLYLW='\033[01;33m'
 readonly __COLBLU='\033[01;34m'
 
-ROOT_PS1="\[${__COLRED}\]\h\[${__COLBLU}\] \w #\[${__COLRST}\] "
-USER_PS1="\[${__COLGRN}\]\u@\h\[${__COLBLU}\] \w \$\[${__COLRST}\] "
-ROOT_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
-USER_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
+__ROOT_PS1="\[${__COLRED}\]\h\[${__COLBLU}\] \w #\[${__COLRST}\] "
+__USER_PS1="\[${__COLGRN}\]\u@\h\[${__COLBLU}\] \w \$\[${__COLRST}\] "
+__ROOT_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
+__USER_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
 
-if [ "${USERNAME}" == 'root' ]; then
-    export PS1="${ROOT_PS1}"
-    export PS2="${ROOT_PS2}"
-else
-    export PS1="${USER_PS1}"
-    export PS2="${USER_PS2}"
-    export SUDO_PS1="${ROOT_PS1}"
-    export SUDO_PS2="${ROOT_PS2}"
-fi
-
-
-if [ "${USERNAME}" == 'root' ]; then
-    export PS1="${ROOT_PS1}"
-    export PS2="${ROOT_PS2}"
-else
-    export PS1="${USER_PS1}"
-    export PS2="${USER_PS2}"
-    export SUDO_PS1="${ROOT_PS1}"
-    export SUDO_PS2="${ROOT_PS2}"
-fi
-
-
-export PAGER=/usr/bin/most
-export EDITOR=/usr/bin/vim
-export BROWSER=/usr/bin/firefox
-export MAKEOPTS='-j 2'
-export NUMJOBS=${MAKEOPTS}
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -125,4 +98,25 @@ myip()
 
     return 0
 }
+
+__export_ps()
+{
+    if [ "${USERNAME}" == 'root' ]; then
+        export PS1="${__ROOT_PS1}"
+        export PS2="${__ROOT_PS2}"
+    else
+        export PS1="${__USER_PS1}"
+        export PS2="${__USER_PS2}"
+        export SUDO_PS1="${__ROOT_PS1}"
+        export SUDO_PS2="${__ROOT_PS2}"
+    fi
+}
+
+
+__export_ps
+export PAGER=/usr/bin/most
+export EDITOR=/usr/bin/vim
+export BROWSER=/usr/bin/firefox
+export MAKEOPTS='-j 2'
+export NUMJOBS=${MAKEOPTS}
 

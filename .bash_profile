@@ -1,26 +1,24 @@
-#PROXY_HOST='http://proxy.local:3128'
-#export http_proxy=$PROXY_HOST
-#export HTTP_PROXY=$PROXY_HOST
-#export https_proxy=$PROXY_HOST
-#export HTTPS_PROXY=$PROXY_HOST
-#export ftp_proxy=$PROXY_HOST
-#export FTP_PROXY=$PROXY_HOST
+readonly __COLRST='\033[00m'
+readonly __COLRED='\033[01;31m'
+readonly __COLGRN='\033[01;32m'
+readonly __COLYLW='\033[01;33m'
+readonly __COLBLU='\033[01;34m'
 
-ROOT_PS1='\[\033[01;31m\]\h\[\033[01;34m\] \w \$\[\033[00m\] '
-USER_PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] '
-ROOT_PS2='\[\033[01;32m\]|\[\033[00m\] '
-#USER_PS2='\[\033[01;31m\]>\[\033[01;33m\]>\[\033[01;32m\]>\[\033[00m\] '
-USER_PS2='\[\033[01;32m\]|\[\033[00m\] '
+ROOT_PS1="\[${__COLRED}\]\h\[${__COLBLU}\] \w #\[${__COLRST}\] "
+USER_PS1="\[${__COLGRN}\]\u@\h\[${__COLBLU}\] \w \$\[${__COLRST}\] "
+ROOT_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
+USER_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
 
-### >>> ###
-#
-#ROOT_PS1='\[\033[01;31m\]\h\[\033[01;34m\] \w \[\033[01;31m\]>>>\[\033[00m\] '
-#USER_PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \[\033[01;31m\]>\[\033[01;33m\]>\[\033[01;32m\]>\[\033[00m\] '
+if [ "${USERNAME}" == 'root' ]; then
+    export PS1="${ROOT_PS1}"
+    export PS2="${ROOT_PS2}"
+else
+    export PS1="${USER_PS1}"
+    export PS2="${USER_PS2}"
+    export SUDO_PS1="${ROOT_PS1}"
+    export SUDO_PS2="${ROOT_PS2}"
+fi
 
-### RHEL ###
-#
-#ROOT_PS1='\[\033[01;34m[\]\[\033[01;31m\h\]\[\033[01;34m \w]\]\[\033[1;31m\$\033[0m\] '
-#USER_PS1='\[\033[01;34m[\]\[\033[01;32m\u@\h\]\[\033[01;34m \w]\]\[\033[1;32m\$\033[0m\] '
 
 if [ "${USERNAME}" == 'root' ]; then
     export PS1="${ROOT_PS1}"

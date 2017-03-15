@@ -10,10 +10,94 @@ __USER_PS1="\[${__COLGRN}\]\u@\h\[${__COLBLU}\] \w \$\[${__COLRST}\] "
 __ROOT_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
 __USER_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
 
+__which_first_found()
+{
+    local ___entry=''
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+    if [ ${#} -ne 0 ]; then
+        for e in ${@}; do
+            ___entry="$(which ${e})"
+
+            if [ ! -z "${___entry}" ]; then
+                echo "${___entry}"
+                break
+            fi
+        done
+    fi
+}
+
+__export_ps()
+{
+    if [ "${USERNAME}" == 'root' ]; then
+        export PS1="${__ROOT_PS1}"
+        export PS2="${__ROOT_PS2}"
+    else
+        export PS1="${__USER_PS1}"
+        export PS2="${__USER_PS2}"
+        export SUDO_PS1="${__ROOT_PS1}"
+        export SUDO_PS2="${__ROOT_PS2}"
+    fi
+}
+
+__export_pager()
+{
+    local ___pager=''
+
+    # User-defined
+    if [ ! -z "${1}" ]; then
+        ___pager="$(which ${1})"
+
+    # Guess
+    else
+        ___pager="$(__which_first_found 'most' 'less' 'more')"
+    fi
+
+    # Export existing pager
+    if [ ! -z "${___pager}" ]; then
+        export PAGER="${___pager}"
+    fi
+}
+
+__export_editor()
+{
+    local ___editor=''
+
+    # User-defined
+    if [ ! -z "${1}" ]; then
+        ___editor="$(which ${1})"
+
+    # Guess
+    else
+        ___editor="$(__which_first_found 'vim' 'emacs' 'nano' 'ee' 'vi')"
+    fi
+
+    # Export existing editor
+    if [ ! -z "${___editor}" ]; then
+        export EDITOR="${___editor}"
+    fi
+}
+
+
+__export_browser()
+{
+    local ___browser=''
+
+    # User-defined
+    if [ ! -z "${1}" ]; then
+        ___browser="$(which ${1})"
+
+    # Guess
+    else
+        ___browser="$(__which_first_found 'firefox' 'midori' 'lynx')"
+    fi
+
+    # Export existing browser
+    if [ ! -z "${___browser}" ]; then
+        export BROWSER="${___browser}"
+    fi
+}
+
+
 
 # --- SSH agent --- #
 agent()
@@ -21,7 +105,7 @@ agent()
     case "${1}" in
         'start')
             if [ -z "${SSH_AUTH_SOCK}" ] ; then
-                eval `ssh-agent -s`
+                eval $(ssh-agent -s)
                 ssh-add
             fi
         ;;
@@ -100,28 +184,19 @@ myip()
     return 0
 }
 
-__export_ps()
-{
-    if [ "${USERNAME}" == 'root' ]; then
-        export PS1="${__ROOT_PS1}"
-        export PS2="${__ROOT_PS2}"
-    else
-        export PS1="${__USER_PS1}"
-        export PS2="${__USER_PS2}"
-        export SUDO_PS1="${__ROOT_PS1}"
-        export SUDO_PS2="${__ROOT_PS2}"
-    fi
-}
-
-
 
 ################################
 # Actual exporting starts here #
 ################################
 __export_ps
-export PAGER=/usr/bin/most
-export EDITOR=/usr/bin/vim
-export BROWSER=/usr/bin/firefox
+__export_pager
+__export_editor
+__export_browser
+
 export MAKEOPTS='-j 2'
 export NUMJOBS=${MAKEOPTS}
+
+if [ -f "${HOME}/.bash_aliases" ]; then
+    source "${HOME}/.bash_aliases"
+fi
 

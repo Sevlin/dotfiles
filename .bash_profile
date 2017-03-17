@@ -49,7 +49,7 @@ __export_pager()
 
     # Guess
     else
-        ___pager="$(__which_first_found 'most' 'less' 'more')"
+        ___pager="$(__which_first_found 'most' 'less' 'more' 'cat')"
     fi
 
     # Export existing pager

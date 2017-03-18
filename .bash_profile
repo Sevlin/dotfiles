@@ -142,22 +142,22 @@ agent()
 # --- MyIP resolver --- #
 _myip_ip4()
 {
-    echo -n 'IPv4: '
+    echo -en "${__COLBLU}IPv4:${__COLRST} "
     curl -4 --no-keepalive \
             --silent \
             --connect-timeout "3" \
             --get "${1}" 2>/dev/null \
-    || echo 'Unable to determine' 1>&2
+    || echo "${__COLRED}Unable to determine${__COLRST}" 1>&2
 }
 
 _myip_ip6()
 {
-    echo -n 'IPv6: '
+    echo -en "${__COLBLU}IPv6:${__COLRST} "
     curl -6 --no-keepalive \
             --silent \
             --connect-timeout "3" \
             --get "${1}" 2>/dev/null \
-    || echo 'Unable to determine' 1>&2
+    || echo -e "${__COLRED}Unable to determine${__COLRST}" 1>&2
 }
 
 myip()

@@ -102,18 +102,28 @@ __export_browser()
 # --- SSH agent --- #
 agent()
 {
+    local __agent_env=''
     case "${1}" in
         'start')
             if [ -z "${SSH_AUTH_SOCK}" ] ; then
-                eval $(ssh-agent -s)
-                ssh-add
+                __agent_env="$(ssh-agent -s 2>/dev/null)"
+
+                if [ ${?} -eq 0 ] \
+                && [ ! -z "${__agent_env}" ]; then
+                    eval "$(echo ${__agent_env} | tee ${HOME}/.ssh/.agent)"
+                    ssh-add
+                fi
             fi
         ;;
         'stop')
             kill -TERM ${SSH_AGENT_PID} &> /dev/null
+            rm "${HOME}/.ssh/.agent"    2> /dev/null
+            unset SSH_AUTH_SOCK SSH_AGENT_PID
         ;;
         'term')
             killall -s TERM ssh-agent
+            rm "${HOME}/.ssh/.agent" 2> /dev/null
+            unset SSH_AUTH_SOCK SSH_AGENT_PID
         ;;
         'restart')
             agent stop
@@ -137,7 +147,6 @@ agent()
         ;;
     esac
 }
-
 
 # --- MyIP resolver --- #
 _myip_ip4()
@@ -198,5 +207,10 @@ export NUMJOBS=${MAKEOPTS}
 
 if [ -f "${HOME}/.bash_aliases" ]; then
     source "${HOME}/.bash_aliases"
+fi
+
+# ssh-agent
+if [ -r "${HOME}/.ssh/.agent" ]; then
+    source "${HOME}/.ssh/.agent" > /dev/null
 fi
 

@@ -16,7 +16,7 @@ __which_first_found()
 
     if [ ${#} -ne 0 ]; then
         for e in ${@}; do
-            ___entry="$(which ${e})"
+            ___entry="$(which ${e} 2>/dev/null)"
 
             if [ ! -z "${___entry}" ]; then
                 echo "${___entry}"

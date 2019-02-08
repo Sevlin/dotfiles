@@ -16,7 +16,7 @@ __which_first_found()
 
     if [ ${#} -ne 0 ]; then
         for e in ${@}; do
-            ___entry="$(which ${e} 2>/dev/null)"
+            ___entry="$(command -v ${e} 2>/dev/null)"
 
             if [ ! -z "${___entry}" ]; then
                 echo "${___entry}"
@@ -49,12 +49,22 @@ __export_pager()
 
     # Guess
     else
-        ___pager="$(__which_first_found 'most' 'less' 'more' 'cat')"
+        ___pager="$(__which_first_found 'less' 'most' 'more' 'cat')"
     fi
 
     # Export existing pager
     if [ ! -z "${___pager}" ]; then
         export PAGER="${___pager}"
+
+        export LESS='-r'
+        # Add colours for less
+        export LESS_TERMCAP_mb=$'\E[01;31m'
+        export LESS_TERMCAP_md=$'\E[01;31m'
+        export LESS_TERMCAP_me=$'\E[0m'
+        export LESS_TERMCAP_se=$'\E[0m'
+        export LESS_TERMCAP_so=$'\E[01;44;33m'
+        export LESS_TERMCAP_ue=$'\E[0m'
+        export LESS_TERMCAP_us=$'\E[01;32m'
     fi
 }
 
@@ -156,7 +166,7 @@ _myip_ip4()
             --silent \
             --connect-timeout "3" \
             --get "${1}" 2>/dev/null \
-    || echo "${__COLRED}Unable to determine${__COLRST}" 1>&2
+    || echo -e "${__COLRED}Unable to determine${__COLRST}" 1>&2
 }
 
 _myip_ip6()
@@ -193,20 +203,76 @@ myip()
     return 0
 }
 
+# Handy function to extract files
+#
+# Copied from http://ricecows.org/configs/bash/.bashrc
+ex()
+{
+    if [ -r "${1}" ]; then
+        case "${1}" in
+            *.tgz  | *.tar.gz)  tar xzvf "${1}" ;;
+            *.tbz2 | *.tar.bz2) tar xjvf "${1}" ;;
+            *.txz  | *.tar.xz)  tar xJvf "${1}" ;;
+            *.gz)  gunzip "${1}"     ;;
+            *.bz2) bunzip2 "${1}"    ;;
+            *.xz)  unxz "${1}"       ;;
+            *.Z)   uncompress "${1}" ;;
+            *.7z)  7z x "${1}"       ;;
+            *.zip) unzip "${1}"      ;;
+            *.rar) unrar x "${1}"    ;;
+            *.rpm)
+                local __dir="${1%%.rpm}"
+                mkdir "${__dir}"
+                cd "${__dir}"
+                rpm2cpio "../${1}" | cpio -vid
+                cd -
+                unset __dir
+            ;;
+            *.deb)
+                local __dir="${1%%.deb}"
+                mkdir "${__dir}"
+                ar xv "${1}"
+                tar -C "${__dir}" -xvf data.tar.?z*
+                unset __dir
+            ;;
+            *) echo "${1} is not supported" 1>&2 ;;
+        esac
+    else
+        echo "Missing archive" 1>&2
+    fi
+}
+
+#################
+# Shell options #
+#################
+
+# Re-check window size after each command
+shopt -s checkwinsize
+
+# Append to history file
+shopt -s histappend
 
 ################################
 # Actual exporting starts here #
 ################################
+
+# Add local directories to PATH
+export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
+
+# Remove duplicates form .bash_history
+export HISTCONTROL=ignoreboth:erasedups
+
 __export_ps
 __export_pager
 __export_editor
 __export_browser
 
-export MAKEOPTS='-j 2'
-export NUMJOBS=${MAKEOPTS}
-
-if [ -f "${HOME}/.bash_aliases" ]; then
+if [[ -f "${HOME}/.bash_aliases" ]]; then
     source "${HOME}/.bash_aliases"
+fi
+
+if [[ -f "${HOME}/.environment" ]]; then
+    source "${HOME}/.environment"
 fi
 
 # ssh-agent

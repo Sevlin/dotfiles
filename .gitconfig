@@ -25,6 +25,9 @@
 [receive]
     fsckObjects = true
 
+[push]
+    default = current
+
 [color]
     ui = true
 

@@ -1,7 +1,8 @@
+
 alias 'x'='clear'
 alias 'su+'='sudo -Ei'
-alias 'll'="ls $LS_OPTIONS -hl"
-alias 'la'="ls $LS_OPTIONS -hla"
+alias 'll'="ls ${LS_OPTIONS} -hl"
+alias 'la'="ls ${LS_OPTIONS} -hla"
 alias 'rm'='rm --preserve-root -v -I'
 alias 'chown'='chown --preserve-root -v'
 alias 'chmod'='chmod --preserve-root -v'
@@ -14,3 +15,4 @@ alias '..'='cd ..'
 alias 'fucking'='sudo'
 alias 'weather'='curl http://wttr.in/Kyiv?lang=uk' 2> /dev/null
 alias 'KILL'='killall -s KILL'
+

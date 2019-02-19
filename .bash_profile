@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-readonly __COLRST='\033[00m'
-readonly __COLRED='\033[01;31m'
-readonly __COLGRN='\033[01;32m'
-readonly __COLYLW='\033[01;33m'
-readonly __COLBLU='\033[01;34m'
+__COL_RST='\033[00m'
+__COL_RED='\033[01;31m'
+__COL_GRN='\033[01;32m'
+__COL_YLW='\033[01;33m'
+__COL_BLU='\033[01;34m'
 
-__ROOT_PS1="\[${__COLRED}\]\h\[${__COLBLU}\] \w #\[${__COLRST}\] "
-__USER_PS1="\[${__COLGRN}\]\u@\h\[${__COLBLU}\] \w \$\[${__COLRST}\] "
-__ROOT_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
-__USER_PS2="\[${__COLYLW}\]|\[${__COLRST}\] "
+__ROOT_PS1="\[${__COL_RED}\]\h\[${__COL_BLU}\] \w #\[${__COL_RST}\] "
+__USER_PS1="\[${__COL_GRN}\]\u@\h\[${__COL_BLU}\] \w \$\[${__COL_RST}\] "
+__ROOT_PS2="\[${__COL_YLW}\]|\[${__COL_RST}\] "
+__USER_PS2="\[${__COL_YLW}\]|\[${__COL_RST}\] "
 
 __which_first_found()
 {
     local ___entry=''
 
     if [ ${#} -ne 0 ]; then
-        for e in ${@}; do
-            ___entry="$(command -v ${e} 2>/dev/null)"
+        for e in "${@}"; do
+            ___entry=$(command -v "${e}" 2>/dev/null)
 
-            if [ ! -z "${___entry}" ]; then
+            if [ -n "${___entry}" ]; then
                 echo "${___entry}"
                 break
             fi
@@ -39,13 +39,14 @@ __export_ps()
     fi
 }
 
+# shellcheck disable=SC2120
 __export_pager()
 {
     local ___pager=''
 
     # User-defined
-    if [ ! -z "${1}" ]; then
-        ___pager="$(which ${1})"
+    if [ -n "${1}" ]; then
+        ___pager=$(command -v "${1}")
 
     # Guess
     else
@@ -53,7 +54,7 @@ __export_pager()
     fi
 
     # Export existing pager
-    if [ ! -z "${___pager}" ]; then
+    if [ -n "${___pager}" ]; then
         export PAGER="${___pager}"
 
         export LESS='-r'
@@ -68,13 +69,14 @@ __export_pager()
     fi
 }
 
+# shellcheck disable=SC2120
 __export_editor()
 {
     local ___editor=''
 
     # User-defined
-    if [ ! -z "${1}" ]; then
-        ___editor="$(which ${1})"
+    if [ -n "${1}" ]; then
+        ___editor=$(command -v "${1}")
 
     # Guess
     else
@@ -82,19 +84,19 @@ __export_editor()
     fi
 
     # Export existing editor
-    if [ ! -z "${___editor}" ]; then
+    if [ -n "${___editor}" ]; then
         export EDITOR="${___editor}"
     fi
 }
 
-
+# shellcheck disable=SC2120
 __export_browser()
 {
     local ___browser=''
 
     # User-defined
-    if [ ! -z "${1}" ]; then
-        ___browser="$(which ${1})"
+    if [ -n "${1}" ]; then
+        ___browser=$(command -v "${1}")
 
     # Guess
     else
@@ -102,11 +104,10 @@ __export_browser()
     fi
 
     # Export existing browser
-    if [ ! -z "${___browser}" ]; then
+    if [ -n "${___browser}" ]; then
         export BROWSER="${___browser}"
     fi
 }
-
 
 
 # --- SSH agent --- #
@@ -116,17 +117,16 @@ agent()
     case "${1}" in
         'start')
             if [ -z "${SSH_AUTH_SOCK}" ] ; then
-                __agent_env="$(ssh-agent -s 2>/dev/null)"
-
-                if [ ${?} -eq 0 ] \
-                && [ ! -z "${__agent_env}" ]; then
-                    eval "$(echo ${__agent_env} | tee ${HOME}/.ssh/.agent)"
+                if __agent_env="$(ssh-agent -s 2>/dev/null)" \
+                && [ -n "${__agent_env}" ]; then
+                    # shellcheck disable=SC2046
+                    eval $(echo "${__agent_env}" | tee "${HOME}/.ssh/.agent")
                     ssh-add
                 fi
             fi
         ;;
         'stop')
-            kill -TERM ${SSH_AGENT_PID} &> /dev/null
+            kill -TERM "${SSH_AGENT_PID}" &> /dev/null
             rm "${HOME}/.ssh/.agent"    2> /dev/null
             unset SSH_AUTH_SOCK SSH_AGENT_PID
         ;;
@@ -161,22 +161,22 @@ agent()
 # --- MyIP resolver --- #
 _myip_ip4()
 {
-    echo -en "${__COLBLU}IPv4:${__COLRST} "
+    echo -en "${__COL_BLU}IPv4:${__COL_RST} "
     curl -4 --no-keepalive \
             --silent \
             --connect-timeout "3" \
             --get "${1}" 2>/dev/null \
-    || echo -e "${__COLRED}Unable to determine${__COLRST}" 1>&2
+    || echo -e "${__COL_RED}Unable to determine${__COL_RST}" 1>&2
 }
 
 _myip_ip6()
 {
-    echo -en "${__COLBLU}IPv6:${__COLRST} "
+    echo -en "${__COL_BLU}IPv6:${__COL_RST} "
     curl -6 --no-keepalive \
             --silent \
             --connect-timeout "3" \
             --get "${1}" 2>/dev/null \
-    || echo -e "${__COLRED}Unable to determine${__COLRST}" 1>&2
+    || echo -e "${__COL_RED}Unable to determine${__COL_RST}" 1>&2
 }
 
 myip()
@@ -223,9 +223,9 @@ ex()
             *.rpm)
                 local __dir="${1%%.rpm}"
                 mkdir "${__dir}"
-                cd "${__dir}"
+                cd "${__dir}" || return
                 rpm2cpio "../${1}" | cpio -vid
-                cd -
+                cd - || return
                 unset __dir
             ;;
             *.deb)
@@ -263,20 +263,26 @@ export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
 export HISTCONTROL=ignoreboth:erasedups
 
 __export_ps
+# shellcheck disable=SC2119
 __export_pager
+# shellcheck disable=SC2119
 __export_editor
+# shellcheck disable=SC2119
 __export_browser
 
 if [[ -f "${HOME}/.bash_aliases" ]]; then
+    # shellcheck disable=SC1090
     source "${HOME}/.bash_aliases"
 fi
 
 if [[ -f "${HOME}/.environment" ]]; then
+    # shellcheck disable=SC1090
     source "${HOME}/.environment"
 fi
 
 # ssh-agent
-if [ -r "${HOME}/.ssh/.agent" ]; then
+if [[ -r "${HOME}/.ssh/.agent" ]]; then
+    # shellcheck disable=SC1090
     source "${HOME}/.ssh/.agent" > /dev/null
 fi
 

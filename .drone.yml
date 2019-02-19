@@ -1,0 +1,19 @@
+---
+pipeline:
+  lint-shell:
+    image: koalaman/shellcheck-alpine:stable
+    group: lint
+    commands:
+      - apk add --no-cache bash
+      - bash ./.drone/lint-shell.sh
+
+  lint-yaml:
+    image: sdesbure/yamllint:latest
+    group: lint
+    commands:
+      - apk add --no-cache bash
+      - bash ./.drone/lint-yaml.sh
+
+branches:
+  exlude: [ master ]
+# vim:set syntax=yaml ts=2 sw=2 et:

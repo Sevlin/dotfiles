@@ -28,7 +28,7 @@ __which_first_found()
 
 __export_ps()
 {
-    if [ "${USERNAME}" == 'root' ]; then
+    if [ "${USER}" == 'root' ]; then
         export PS1="${__ROOT_PS1}"
         export PS2="${__ROOT_PS2}"
     else

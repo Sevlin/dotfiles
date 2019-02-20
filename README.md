@@ -1,5 +1,5 @@
-# My configuration files
-This repo contains configuration files for `bash`, `git` and `vim` that are being used by me on daily bases.  
+# Dotfiles
+This repo contains configuration files for `bash`, `git` and `vim` that are being used by me on daily basis.  
 
 ## Files
 |       Name      | Description                                                                                                                                                                              |
@@ -24,6 +24,7 @@ This repo contains configuration files for `bash`, `git` and `vim` that are bein
 | Name                  | Arguments                                   | Description                                                                                                                   |
 |:---------------------:|:-------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------|
 | __which_first_found() | List of executables to choose within `PATH` | This function is used by "guessing" mechainsm. Will return full path to first matched binary name provided in argument list. At the moment used only in `__export_*()` functions. |
+| __export_ps()         | None                                        | `export PS1` and `export PS2` |
 | __export_pager()      | Empty or pager name                         | `export PAGER`<br>If user hadn't explicitly specify pager name, then function will try to "guess" first available pager available using `__which_first_found()`.<br>Default list: **less**, **most**, **more**, **cat** |
 | __export_editor()     | Empty or editor name                        | `export EDITOR`<br> If user hadn't explicitly specify editor name, then function will try to "guess" first available editor available using `__which_first_found()`.<br>Default list: **vim**, **emacs**, **nano**, **ee**, **vi** |
 | __export_browser()    | Empty or browser name                       | `export BROWSER`<br>If user hadn't explicitly specify browser name, then function will try to "guess" first available editor available using `__which_first_found()`.<br>Default list: **firefox**, **midori**, **lynx** |

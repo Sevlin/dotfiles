@@ -109,6 +109,22 @@ __export_browser()
     fi
 }
 
+__export_ls_colors()
+{
+    # Copied from Slackware's /etc/profile.d/coreutils-dircolors.sh
+    #
+    # Set up the LS_COLORS environment:
+    if [ -f "${HOME}/.dir_colors" ]; then
+        # shellcheck disable=SC2046
+        eval $(/bin/dircolors -b "${HOME}/.dir_colors")
+    elif [ -f /etc/DIR_COLORS ]; then
+        # shellcheck disable=SC2046
+        eval $(/bin/dircolors -b /etc/DIR_COLORS)
+    else
+        # shellcheck disable=SC2046
+        eval $(/bin/dircolors -b)
+    fi
+}
 
 # --- SSH agent --- #
 agent()
@@ -263,6 +279,7 @@ export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
 export HISTCONTROL=ignoreboth:erasedups
 
 __export_ps
+__export_ls_colors
 # shellcheck disable=SC2119
 __export_pager
 # shellcheck disable=SC2119

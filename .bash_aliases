@@ -1,8 +1,9 @@
 
 alias 'x'='clear'
 alias 'su+'='sudo -Ei'
-alias 'll'="ls ${LS_OPTIONS} -hl"
-alias 'la'="ls ${LS_OPTIONS} -hla"
+alias 'ls'="/usr/bin/ls ${LS_OPTIONS} -h"
+alias 'll'="/usr/bin/ls ${LS_OPTIONS} -hl"
+alias 'la'="/usr/bin/ls ${LS_OPTIONS} -hla"
 alias 'rm'='rm --preserve-root -v -I'
 alias 'chown'='chown --preserve-root -v'
 alias 'chmod'='chmod --preserve-root -v'

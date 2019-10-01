@@ -232,6 +232,7 @@ ex()
             *.gz)  gunzip "${1}"     ;;
             *.bz2) bunzip2 "${1}"    ;;
             *.xz)  unxz "${1}"       ;;
+            *.lz)  lzip -d "${1}"    ;;
             *.Z)   uncompress "${1}" ;;
             *.7z)  7z x "${1}"       ;;
             *.zip) unzip "${1}"      ;;
@@ -274,6 +275,13 @@ shopt -s histappend
 
 # Add local directories to PATH
 export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
+
+# Don't truncate history file
+export HISTSIZE=-1
+export HISTFILESIZE=-1
+
+# History date format
+export HISTTIMEFORMAT="[%F %T] "
 
 # Remove duplicates form .bash_history
 export HISTCONTROL=ignoreboth:erasedups

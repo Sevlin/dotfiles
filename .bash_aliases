@@ -1,6 +1,6 @@
 
 alias 'x'='clear'
-alias 'su+'='sudo -Ei'
+alias 'su+'='sudo -i'
 alias 'ls'="/usr/bin/ls ${LS_OPTIONS} -h"
 alias 'll'="/usr/bin/ls ${LS_OPTIONS} -hl"
 alias 'la'="/usr/bin/ls ${LS_OPTIONS} -hla"

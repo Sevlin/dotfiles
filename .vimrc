@@ -3,8 +3,11 @@ set nocompatible
 
 " Enable syntax higlighting
 syntax on
-" Set colorscheme
 
+" Set 8 colour terminal
+set t_Co=8
+
+" Set colorscheme
 colorscheme evening
 
 " Tabs and spaces

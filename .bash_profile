@@ -286,6 +286,10 @@ export HISTTIMEFORMAT="[%F %T] "
 # Remove duplicates form .bash_history
 export HISTCONTROL=ignoreboth:erasedups
 
+# Enable colourful output for GCC 4.9+
+# https://gcc.gnu.org/onlinedocs/gcc-4.9.2/gcc/Language-Independent-Options.html
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 __export_ps
 __export_ls_colors
 # shellcheck disable=SC2119
@@ -309,5 +313,10 @@ fi
 if [[ -r "${HOME}/.ssh/.agent" ]]; then
     # shellcheck disable=SC1090
     source "${HOME}/.ssh/.agent" > /dev/null
+fi
+
+# Terraform
+if [[ -n $(command -v terraform) ]]; then
+    export TF_DATA_DIR="${HOME}/.local/var/terraform"
 fi
 

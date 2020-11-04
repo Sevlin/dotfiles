@@ -5,14 +5,14 @@ pipeline:
     group: lint
     commands:
       - apk add --no-cache bash
-      - bash ./.drone/lint-shell.sh
+      - bash ./.ci/lint-shell.sh
 
   lint-yaml:
     image: sdesbure/yamllint:latest
     group: lint
     commands:
       - apk add --no-cache bash
-      - bash ./.drone/lint-yaml.sh
+      - bash ./.ci/lint-yaml.sh
 
 branches:
   exlude: [ master ]

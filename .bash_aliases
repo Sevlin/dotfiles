@@ -16,6 +16,9 @@ alias '..'='cd ..'
 alias 'fucking'='sudo'
 alias 'weather'='curl http://wttr.in/Kyiv?lang=uk' 2> /dev/null
 alias 'KILL'='killall -s KILL'
+if [[ -n $(command -v kubectl) ]]; then
+    alias 'kc'='kubectl'
+fi
 
 # LOL!!1
 alias 'wtf'='dmesg'

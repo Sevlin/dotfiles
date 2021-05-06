@@ -1,18 +1,20 @@
 ---
 pipeline:
   lint-shell:
-    image: koalaman/shellcheck-alpine:stable
+    image: sevoid/linter:plugin
+    pull: true
     group: lint
-    commands:
-      - apk add --no-cache bash
-      - bash ./.ci/lint-shell.sh
+    lint: shell
+    files:
+      - ".bashrc"
+      - ".bash_profile"
+      - ".bash_aliases"
 
   lint-yaml:
-    image: sdesbure/yamllint:latest
+    image: sevoid/linter:plugin
+    pull: true
     group: lint
-    commands:
-      - apk add --no-cache bash
-      - bash ./.ci/lint-yaml.sh
+    lint: yaml
 
 branches:
   exlude: [ master ]

@@ -1,0 +1,9 @@
+shell=bash
+color=always
+severity=error
+# Ignore missing shebang
+disable=SC2148
+# Ignore slackware's ${LS_OPTIONS}
+disable=SC2139
+# Don't follow includes
+disable=SC1091

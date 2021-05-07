@@ -1,4 +1,8 @@
 ---
+clone:
+  git:
+    image: plugins/git:next
+
 pipeline:
   lint-shell:
     image: sevoid/linter:plugin

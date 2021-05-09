@@ -1,11 +1,11 @@
 ---
 clone:
   git:
-    image: plugins/git:next
+    image: drone/git
 
 pipeline:
   lint-shell:
-    image: sevoid/linter:plugin
+    image: sevoid/linter
     pull: true
     group: lint
     lint: shell
@@ -15,7 +15,7 @@ pipeline:
       - ".bash_aliases"
 
   lint-yaml:
-    image: sevoid/linter:plugin
+    image: sevoid/linter
     pull: true
     group: lint
     lint: yaml

@@ -16,9 +16,7 @@ alias '..'='cd ..'
 alias 'fucking'='sudo'
 alias 'weather'='curl http://wttr.in/Kyiv?lang=uk' 2> /dev/null
 alias 'KILL'='killall -s KILL'
-if [[ ${PAGER} =~ .*/bat ]]; then
-    alias 'less'='bat'
-fi
+
 if [[ -n $(command -v kubectl) ]]; then
     alias 'kc'='kubectl'
 fi

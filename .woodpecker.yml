@@ -13,13 +13,36 @@ pipeline:
       - ".bashrc"
       - ".bash_profile"
       - ".bash_aliases"
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - master
 
   lint-yaml:
     image: sevoid/linter
     pull: true
     group: lint
     lint: yaml
+    when:
+      event:
+        - push
+      branch:
+        exclude:
+          - master
 
-branches:
-  exlude: [ master ]
+  mirror-to-github:
+    image: appleboy/drone-git-push
+    remote: git@github.com:Sevlin/dotfiles.git
+    force: true
+    secrets:
+      - source: github
+        target: GIT_PUSH_SSH_KEY
+    when:
+      event:
+        - push
+      branch:
+        - master
+
 # vim:set syntax=yaml ts=2 sw=2 et:

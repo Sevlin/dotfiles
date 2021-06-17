@@ -22,6 +22,10 @@ bash_aliases: bash_profile
 
 bash: bash_profile bash_aliases
 
+inputrc:
+	@echo "[ inputrc ] Installing .inputrc"
+	@cat .inputrc > ~/.inputrc
+
 gitconfig:
 	@echo "[ git ] Installing .gitconfig"
 	@cat .gitconfig > ~/.gitconfig
@@ -38,7 +42,7 @@ vimrc:
 
 vim: vimrc
 
-install: bash git vim
+install: bash inputrc git vim
 
 all: clean install profile
 
